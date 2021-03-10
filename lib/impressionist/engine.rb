@@ -3,13 +3,10 @@ module Impressionist
     attr_accessor :orm
 
     initializer 'impressionist.model' do |app|
-
-      Rails.application.reloader.to_prepare do
         @orm = Impressionist.orm
         require "#{root}/app/models/impressionist/impressionable.rb"
         require "impressionist/models/#{orm}/impression.rb"
         require "impressionist/models/#{orm}/impressionist/impressionable.rb"
-      end
     end
 
     initializer 'impressionist.controller' do
