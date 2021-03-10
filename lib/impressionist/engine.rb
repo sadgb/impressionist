@@ -6,7 +6,9 @@ module Impressionist
 
       Rails.application.reloader.to_prepare do
         @orm = Impressionist.orm
-        include_orm
+        require "#{root}/app/models/impressionist/impressionable.rb"
+        require "impressionist/models/#{orm}/impression.rb"
+        require "impressionist/models/#{orm}/impressionist/impressionable.rb"
       end
     end
 
@@ -21,14 +23,5 @@ module Impressionist
         end
       end
     end
-
-    private
-
-    def include_orm
-      require "#{root}/app/models/impressionist/impressionable.rb"
-      require "impressionist/models/#{orm}/impression.rb"
-      require "impressionist/models/#{orm}/impressionist/impressionable.rb"
-    end
-
   end
 end
