@@ -2,27 +2,27 @@ module Impressionist
   class Engine < ::Rails::Engine
     attr_accessor :orm
 
-  initializer 'impressionist.model' do |app|
-    Rails.application.reloader.to_prepare do
-      @orm = Impressionist.orm
-      include_orm
+    initializer 'impressionist.model' do |app|
+
+      Rails.application.reloader.to_prepare do
+        @orm = Impressionist.orm
+        include_orm
+      end
     end
-  end
 
+    initializer 'impressionist.controller' do
 
-  initializer 'impressionist.controller' do
-    Rails.application.reloader.to_prepare do
-      require "impressionist/controllers/mongoid/impressionist_controller.rb" if orm == :mongoid.to_s
+      Rails.application.reloader.to_prepare do
+        require "impressionist/controllers/mongoid/impressionist_controller.rb" if orm == :mongoid.to_s
 
-      ActiveSupport.on_load(:action_controller) do
-       include ImpressionistController::InstanceMethods
-       extend ImpressionistController::ClassMethods
-     end
+        ActiveSupport.on_load(:action_controller) do
+          include ImpressionistController::InstanceMethods
+          extend ImpressionistController::ClassMethods
+        end
+      end
     end
-  end
 
-
- private
+    private
 
     def include_orm
       require "#{root}/app/models/impressionist/impressionable.rb"
