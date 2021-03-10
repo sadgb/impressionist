@@ -3,8 +3,10 @@ module Impressionist
     attr_accessor :orm
 
   initializer 'impressionist.model' do |app|
-    @orm = Impressionist.orm
-    include_orm
+    Rails.application.reloader.to_prepare do
+      @orm = Impressionist.orm
+      include_orm
+    end
   end
 
 
